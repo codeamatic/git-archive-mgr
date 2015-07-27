@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/gam/gam.iml" filepath="$PROJECT_DIR$/gam/gam.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gam.iml" filepath="$PROJECT_DIR$/gam.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gam-site/gam-site.iml" filepath="$PROJECT_DIR$/gam-site/gam-site.iml" />
+      <module fileurl="file://$PROJECT_DIR$/git-archive-mgr.iml" filepath="$PROJECT_DIR$/git-archive-mgr.iml" />
+    </modules>
+  </component>
+</project>
