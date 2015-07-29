@@ -24,18 +24,28 @@ import codeamatic.gam.archive.support.CopyFileVisitor;
 public class Application {
 
   public static void main(String[] args) throws Exception {
-    //final ApplicationContext ctx = SpringApplication.run(SiteConfig.class, args);
 
-    String webPrefix = "rse-web/web";
-    String appPrefix = "rse-web/app";
-    String repoDir = "E:\\Dev\\_projects\\Rockfish\\ConAgra\\rse_rockfish";
+    // check for arguments as well as a configuration file
+    if(args.length > 0) {
+
+    }
+
+    String projectAuthor = "Rockfish";
+    String projectName = "KidCuisine";
+    String webPrefix = "apache-static/";
+    String appPrefix = "tomcat-dynamic/";
+    String diffParam1= "29eff57c141";
+    String diffParam2 = "4b57af2a77a";
+    String repoDir = "E:\\Dev\\_projects\\Rockfish\\ConAgra\\kidcuisine";
+
+    String fromAuthor = "From_" + projectAuthor;
 
     List<String> processList = new ArrayList<>();
     processList.add("git");
     processList.add("diff");
     processList.add("--name-only");
-    processList.add("origin/develop");
-    processList.add("v2.7.9");
+    processList.add(diffParam1);
+    processList.add(diffParam2);
     ProcessBuilder processBuilder = new ProcessBuilder(processList);
     processBuilder.directory(new File(repoDir));
 
@@ -59,11 +69,11 @@ public class Application {
     }
 
     // Create temp directory used for building archive
-    Path tempDir = Files.createTempDirectory("readyseteat");
+    Path tempDir = Files.createTempDirectory(projectName.toLowerCase());
     Path prjStructureOut = null;
 
     if (Files.exists(tempDir)) {
-      prjStructureOut = Paths.get(tempDir + "/" + "From_Rockfish/ReadySetEat/20170725");
+      prjStructureOut = Paths.get(tempDir + "/" + fromAuthor + "/" + projectName + "/20170725");
       Files.createDirectories(prjStructureOut);
     } else {
       // kill the process...
@@ -71,19 +81,6 @@ public class Application {
 
     final Map<String, String> env = new HashMap<>();
     env.put("create", "true");
-
-//        // Add readme
-//        for(String file : appList) {
-//            Path source = Paths.get(repoDir + "/" + file);
-//            Path target = Paths.get(tempDir.toString() + "/" + file.replace("rse-web/", ""));
-//            Path parentTargetDir = target.getParent();
-//
-//            if(! Files.exists(parentTargetDir)) {
-//                Files.createDirectories(parentTargetDir);
-//            }
-//
-//            Files.copy(source, target);
-//        }
 
     if (!webList.isEmpty()) {
       URI
@@ -94,10 +91,45 @@ public class Application {
 
         for (String file : webList) {
           Path source = Paths.get(repoDir + "/" + file);
-          Path target = zipfs.getPath(file.replace("rse-web/web/", ""));
+
+          if(Files.notExists(source)) {
+            // File was deleted, log it to README
+            System.out.println("File was removed " + source.toString());
+            continue;
+          }
+
+          Path target = zipfs.getPath(file.replace(webPrefix, ""));
           Path parentTargetDir = target.getParent();
 
-          if (!Files.exists(parentTargetDir)) {
+          if (parentTargetDir != null && !Files.exists(parentTargetDir)) {
+            Files.createDirectories(parentTargetDir);
+          }
+
+          Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+        }
+      }
+    }
+
+    if (!appList.isEmpty()) {
+      URI
+          uri =
+          URI.create("jar:file:/" + prjStructureOut.toString().replace("\\", "/") + "/app.zip");
+
+      try (FileSystem zipfs = FileSystems.newFileSystem(uri, env)) {
+
+        for (String file : appList) {
+          Path source = Paths.get(repoDir + "/" + file);
+
+          if(Files.notExists(source)) {
+            // File was deleted, log it to README
+            System.out.println("File was removed " + source.toString());
+            continue;
+          }
+
+          Path target = zipfs.getPath(file.replace(appPrefix, ""));
+          Path parentTargetDir = target.getParent();
+
+          if (parentTargetDir != null && !Files.exists(parentTargetDir)) {
             Files.createDirectories(parentTargetDir);
           }
 
@@ -109,10 +141,10 @@ public class Application {
     // Create final zip
     URI
         uri =
-        URI.create("jar:file:/" + tempDir.toString().replace("\\", "/") + "/From_Rockfish_ReadySetEat.zip");
+        URI.create("jar:file:/" + tempDir.toString().replace("\\", "/") + "/" + fromAuthor + "_" + projectName + " .zip");
     try (FileSystem zipFinal = FileSystems.newFileSystem(uri, env)) {
-      Path source = Paths.get(tempDir + "/From_Rockfish");
-      Path target = zipFinal.getPath("From_Rockfish");
+      Path source = Paths.get(tempDir + "/" + fromAuthor);
+      Path target = zipFinal.getPath(fromAuthor);
 
       Files.walkFileTree(source, new CopyFileVisitor(target));
     }
