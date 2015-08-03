@@ -57,7 +57,7 @@ public class Application {
       }
     }
 
-    app.generateZips(webList, appList, prop);
+    app.generateZips(appList, webList, prop);
   }
 
   /**
