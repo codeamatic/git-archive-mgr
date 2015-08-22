@@ -7,7 +7,7 @@ buildscript {
 }
 
 ext {
-    javaVersion = '1.7'
+    javaVersion = '1.6'
 }
 
 configure(allprojects) {
