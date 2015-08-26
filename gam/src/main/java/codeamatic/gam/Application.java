@@ -108,7 +108,7 @@ public class Application {
           uri =
           URI.create("jar:file:/" + prjStructureOut.toString().replace("\\", "/") + "/web.zip");
 
-      System.out.println("# Web Updates");
+      System.out.println("\n# Web Updates");
 
       try (FileSystem zipfs = FileSystems.newFileSystem(uri, env)) {
 
@@ -193,7 +193,7 @@ public class Application {
     InputStream input = null;
 
     try {
-      input = new FileInputStream("gam.properties");
+      input = new FileInputStream("src/main/resources/gam.properties");
 
       // load properties file
       gamProp.load(input);

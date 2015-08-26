@@ -7,7 +7,7 @@ buildscript {
 }
 
 ext {
-    javaVersion = '1.6'
+    javaVersion = '1.7'
 }
 
 configure(allprojects) {
@@ -25,8 +25,6 @@ configure(allprojects) {
     dependencies {
         compile 'org.slf4j:slf4j-api'
         testCompile 'junit:junit'
-        testCompile 'org.hamcrest:hamcrest-library'
-        testCompile 'org.mockito:mockito-core'
     }
 
     configurations {
