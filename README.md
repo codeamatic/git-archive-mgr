@@ -17,10 +17,10 @@ From_Author_ProjectName.zip [Root Zip file]
                 - XYZ_Update.sql  [If applicable, holds query updates]
 ```           
  
- ## Requirements
- 
- JDK 7
- Git
+## Requirements
+
+* JDK 7
+* Git
 
 ## Configuration
 
