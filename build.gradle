@@ -1,8 +1,15 @@
+wrapper.gradleVersion = '2.4'
+
 buildscript {
     ext.springRepo = 'http://repo.spring.io/libs-release'
 
     repositories {
         maven { url springRepo }
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.1.12.RELEASE"
+        classpath 'org.cloudfoundry:cf-gradle-plugin:1.1.1' // see deploy.gradle
     }
 }
 
@@ -23,8 +30,10 @@ configure(allprojects) {
     }
 
     dependencies {
-        compile 'org.slf4j:slf4j-api'
-        testCompile 'junit:junit'
+        compile 'org.slf4j:slf4j-api:1.7.12'
+//        testCompile 'junit:junit'
+//        testCompile 'org.hamcrest:hamcrest-library'
+        testCompile 'org.mockito:mockito-core:1.10.19'
     }
 
     configurations {
@@ -33,8 +42,4 @@ configure(allprojects) {
         // replaced with log4j-over-slf4j
         all*.exclude group: 'log4j', module: 'log4j'
     }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.3'
 }

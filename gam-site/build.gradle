@@ -1,0 +1,13 @@
+apply plugin: 'spring-boot'
+
+springBoot {
+    mainClass = 'codeamatic.gam.Application'
+}
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter-web:1.2.5.RELEASE"
+    compile "org.springframework.boot:spring-boot-starter-freemarker:1.2.5.RELEASE"
+
+    // for use in mocking http interactions
+    testCompile "org.springframework:spring-test"
+}
