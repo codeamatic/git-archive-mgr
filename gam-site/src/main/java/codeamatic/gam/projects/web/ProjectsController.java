@@ -17,4 +17,14 @@ public class ProjectsController {
   public String listProjects(Model model) {
     return "projects/index";
   }
+
+  @RequestMapping(value = "/add", method = { GET, HEAD })
+  public String addProject(Model model) {
+     return "";
+  }
+
+  @RequestMapping(value = "/{project}", method = { GET, HEAD })
+  public String showProject(Model model) {
+    return "";
+  }
 }
