@@ -2,7 +2,11 @@ package codeamatic.gam.projects.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import codeamatic.gam.archives.Archive;
+import codeamatic.gam.projects.Project;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -23,8 +27,12 @@ public class ProjectsController {
      return "";
   }
 
-  @RequestMapping(value = "/{project}", method = { GET, HEAD })
-  public String showProject(Model model) {
-    return "";
+  @RequestMapping(value = "/{projectHash}", method = { GET, HEAD })
+  public String showProject(@PathVariable String projectHash, Model model) {
+
+    Project project = new Project();
+
+    model.addAttribute("archive", new Archive());
+    return "projects/details";
   }
 }
