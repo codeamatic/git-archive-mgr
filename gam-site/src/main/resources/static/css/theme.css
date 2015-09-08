@@ -20,3 +20,8 @@ body {
 .page-header .btn {
     float: right;
 }
+
+form .input-group {
+    width: 100%;
+    margin-bottom: 15px;
+}
