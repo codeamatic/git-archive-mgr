@@ -25,23 +25,27 @@
     [@spring.bind "archive" /]
 
     <div class="input-group">
-        [@spring.formInput "archive.webPrefix" "class='form-control' placeholder='Static Prefix'" "text" /]
+        [@spring.formInput "archive.webPrefix" "class='form-control' placeholder='Static Prefix'" /]
     </div>
 
     <div class="input-group">
-        [@spring.formInput "archive.appPrefix" "class='form-control' placeholder='Dynamic Prefix'" "text" /]
+        [@spring.formInput "archive.appPrefix" "class='form-control' placeholder='Dynamic Prefix'" /]
     </div>
 
     <div class="input-group">
-        [@spring.formInput "archive.diffBranch" "class='form-control' placeholder='Diff Branch'" "text" /]
+        [@spring.formInput "archive.diffBranch" "class='form-control' placeholder='Diff Branch'" /]
     </div>
 
     <div class="input-group">
-        [@spring.formInput "archive.diffParam1" "class='form-control' placeholder='Commit Parameter 1'" "text" /]
+        [@spring.formInput "archive.diffParam1" "class='form-control' placeholder='Commit Parameter 1'" /]
     </div>
 
     <div class="input-group">
-        [@spring.formInput "archive.diffParam2" "class='form-control' placeholder='Commit Parameter 2'" "text" /]
+        [@spring.formInput "archive.diffParam2" "class='form-control' placeholder='Commit Parameter 2'" /]
+    </div>
+
+    <div class="input-group">
+        [@spring.formTextarea "archive.readmeTxt" "class='form-control' placeholder='Readme.Txt'" /]
     </div>
 
     <button type="submit" class="btn btn-default">Submit</button>

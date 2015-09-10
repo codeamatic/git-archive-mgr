@@ -1,7 +1,9 @@
 package codeamatic.gam.projects.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -54,7 +60,26 @@ public class ProjectsController {
     project.setProjectName("ReadySetEat");
     project.setProjectOwner("Rockfish");
 
-    model.addAttribute("archive", new Archive());
+    Archive archive = new Archive();
+
+    try {
+      Resource resource = new ClassPathResource("readme.template.txt");
+      InputStream resourceInputStream = resource.getInputStream();
+      BufferedReader br = new BufferedReader(new InputStreamReader(resourceInputStream));
+      String readmeTxt = "";
+
+      while (br.ready()) {
+        readmeTxt += br.readLine() + "\r\n";
+      }
+      br.close();
+
+      archive.setReadmeTxt(readmeTxt);
+    } catch(IOException e) {
+      // Template is only being loaded for convenience and ease of entry.
+      //  If this fails....just pass through.
+    }
+
+    model.addAttribute("archive", archive);
     return "projects/details";
   }
 
@@ -70,6 +95,12 @@ public class ProjectsController {
     project.setProjectOwner("Rockfish");
 
     String zipPath = "";
+
+    // replace README template holders {{tempHolder}}
+    String readmeTxt = archive.getReadmeTxt();
+    readmeTxt.replace("{{ProjectName}}", project.getProjectName());
+    readmeTxt.replace("{{ProjectDueDate}}", new Date().toString());
+    readmeTxt.replace("{{ProjectTestUrl}}", project.getProjectTestUrl());
 
     try {
       zipPath = archiveProcessor.process(project, archive);

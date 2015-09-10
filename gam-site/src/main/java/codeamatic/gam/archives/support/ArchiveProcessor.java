@@ -108,11 +108,14 @@ public class ArchiveProcessor {
     final Map<String, String> env = new HashMap<>();
     env.put("create", "true");
 
+    String readmeTxt = archive.getReadmeTxt();
+
     if (!webList.isEmpty()) {
       URI
           uri =
           URI.create("jar:file:/" + prjStructureOut.toString().replace("\\", "/") + "/web.zip");
 
+      readmeTxt += "\r\n" + "# Web Updates";
       System.out.println("\n# Web Updates");
 
       try (FileSystem zipfs = FileSystems.newFileSystem(uri, env)) {
@@ -127,6 +130,7 @@ public class ArchiveProcessor {
           }
 
           System.out.println(file);
+          readmeTxt += "\r\n" + file;
 
           Path target = zipfs.getPath(file.replace(archive.getWebPrefix(), ""));
           Path parentTargetDir = target.getParent();
@@ -145,6 +149,7 @@ public class ArchiveProcessor {
           uri =
           URI.create("jar:file:/" + prjStructureOut.toString().replace("\\", "/") + "/app.zip");
 
+      readmeTxt += "\r\n" + "# App Updates";
       System.out.println("# App Updates");
 
       try (FileSystem zipfs = FileSystems.newFileSystem(uri, env)) {
@@ -159,6 +164,7 @@ public class ArchiveProcessor {
           }
 
           System.out.println(file);
+          readmeTxt += "\r\n" + file;
 
           Path target = zipfs.getPath(file.replace(archive.getAppPrefix(), ""));
           Path parentTargetDir = target.getParent();

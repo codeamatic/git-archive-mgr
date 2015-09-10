@@ -17,14 +17,18 @@ public class Project {
 
   private String projectDirectory;
 
-  public Project() {}
+  private String projectTestUrl;
+
+  public Project() {
+  }
 
   public Project(String projectName, String projectOwner,
-                 List<Archive> archiveList, String projectDirectory) {
+                 List<Archive> archiveList, String projectDirectory, String projectTestUrl) {
     this.projectName = projectName;
     this.projectOwner = projectOwner;
     this.archiveList = archiveList;
     this.projectDirectory = projectDirectory;
+    this.projectTestUrl = projectTestUrl;
   }
 
   public String getProjectName() {
@@ -57,5 +61,13 @@ public class Project {
 
   public void setProjectDirectory(String projectDirectory) {
     this.projectDirectory = projectDirectory;
+  }
+
+  public String getProjectTestUrl() {
+    return projectTestUrl;
+  }
+
+  public void setProjectTestUrl(String projectTestUrl) {
+    this.projectTestUrl = projectTestUrl;
   }
 }

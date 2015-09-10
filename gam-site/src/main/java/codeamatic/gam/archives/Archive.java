@@ -12,15 +12,19 @@ public class Archive {
 
   private String diffParam2;
 
-  public Archive(){}
+  private String readmeTxt;
+
+  public Archive() {
+  }
 
   public Archive(String appPrefix, String webPrefix, String diffBranch, String diffParam1,
-                 String diffParam2) {
+                 String diffParam2, String readmeTxt) {
     this.appPrefix = appPrefix;
     this.webPrefix = webPrefix;
     this.diffBranch = diffBranch;
     this.diffParam1 = diffParam1;
     this.diffParam2 = diffParam2;
+    this.readmeTxt = readmeTxt;
   }
 
   public String getAppPrefix() {
@@ -61,5 +65,13 @@ public class Archive {
 
   public void setDiffParam2(String diffParam2) {
     this.diffParam2 = diffParam2;
+  }
+
+  public String getReadmeTxt() {
+    return readmeTxt;
+  }
+
+  public void setReadmeTxt(String readmeTxt) {
+    this.readmeTxt = readmeTxt;
   }
 }
