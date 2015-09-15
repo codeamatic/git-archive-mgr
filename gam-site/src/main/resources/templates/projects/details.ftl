@@ -33,6 +33,10 @@
     </div>
 
     <div class="input-group">
+        [@spring.formInput "archive.deployDate" "class='form-control' placeholder='Deploy Date'" /]
+    </div>
+
+    <div class="input-group">
         [@spring.formInput "archive.diffBranch" "class='form-control' placeholder='Diff Branch'" /]
     </div>
 

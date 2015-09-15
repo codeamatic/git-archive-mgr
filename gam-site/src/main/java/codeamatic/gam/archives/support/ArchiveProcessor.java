@@ -115,8 +115,7 @@ public class ArchiveProcessor {
           uri =
           URI.create("jar:file:/" + prjStructureOut.toString().replace("\\", "/") + "/web.zip");
 
-      readmeTxt += "\r\n" + "# Web Updates";
-      System.out.println("\n# Web Updates");
+      readmeTxt += "\r\n" + "# Web Updates" + "\r\n";
 
       try (FileSystem zipfs = FileSystems.newFileSystem(uri, env)) {
 
@@ -129,8 +128,7 @@ public class ArchiveProcessor {
             continue;
           }
 
-          System.out.println(file);
-          readmeTxt += "\r\n" + file;
+          readmeTxt += file + "\r\n";
 
           Path target = zipfs.getPath(file.replace(archive.getWebPrefix(), ""));
           Path parentTargetDir = target.getParent();
@@ -149,8 +147,7 @@ public class ArchiveProcessor {
           uri =
           URI.create("jar:file:/" + prjStructureOut.toString().replace("\\", "/") + "/app.zip");
 
-      readmeTxt += "\r\n" + "# App Updates";
-      System.out.println("# App Updates");
+      readmeTxt += "\r\n" + "# App Updates" + "\r\n";
 
       try (FileSystem zipfs = FileSystems.newFileSystem(uri, env)) {
 
@@ -163,8 +160,7 @@ public class ArchiveProcessor {
             continue;
           }
 
-          System.out.println(file);
-          readmeTxt += "\r\n" + file;
+          readmeTxt += file + "\r\n";
 
           Path target = zipfs.getPath(file.replace(archive.getAppPrefix(), ""));
           Path parentTargetDir = target.getParent();
@@ -195,7 +191,7 @@ public class ArchiveProcessor {
       zipPath = zipFinal.toString();
     }
 
-    System.out.println("Complete with diffing");
+    System.out.println(readmeTxt);
     return zipPath;
   }
 

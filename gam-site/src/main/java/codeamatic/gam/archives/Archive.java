@@ -6,6 +6,8 @@ public class Archive {
 
   private String webPrefix;
 
+  private String deployDate;
+
   private String diffBranch;
 
   private String diffParam1;
@@ -18,9 +20,10 @@ public class Archive {
   }
 
   public Archive(String appPrefix, String webPrefix, String diffBranch, String diffParam1,
-                 String diffParam2, String readmeTxt) {
+                 String diffParam2, String readmeTxt, String deployDate) {
     this.appPrefix = appPrefix;
     this.webPrefix = webPrefix;
+    this.deployDate = deployDate;
     this.diffBranch = diffBranch;
     this.diffParam1 = diffParam1;
     this.diffParam2 = diffParam2;
@@ -41,6 +44,14 @@ public class Archive {
 
   public void setWebPrefix(String webPrefix) {
     this.webPrefix = webPrefix;
+  }
+
+  public String getDeployDate() {
+    return deployDate;
+  }
+
+  public void setDeployDate(String deployDate) {
+    this.deployDate = deployDate;
   }
 
   public String getDiffBranch() {

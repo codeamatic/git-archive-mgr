@@ -15,6 +15,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
@@ -93,14 +96,21 @@ public class ProjectsController {
         "C:\\Users\\jason.webb\\Dev\\_projects\\ConAgra\\rse_rockfish\\conagra-foods");
     project.setProjectName("ReadySetEat");
     project.setProjectOwner("Rockfish");
+    project.setProjectTestUrl("http://www.rse2.staging.cinjweb.rfisite.com");
 
     String zipPath = "";
 
+    Date date = new Date();
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
     // replace README template holders {{tempHolder}}
     String readmeTxt = archive.getReadmeTxt();
-    readmeTxt.replace("{{ProjectName}}", project.getProjectName());
-    readmeTxt.replace("{{ProjectDueDate}}", new Date().toString());
-    readmeTxt.replace("{{ProjectTestUrl}}", project.getProjectTestUrl());
+    readmeTxt = readmeTxt.replace("{{ProjectName}}", project.getProjectName());
+    readmeTxt = readmeTxt.replace("{{ArchiveDeployDate}}", archive.getDeployDate());
+    readmeTxt = readmeTxt.replace("{{ProjectTestUrl}}", project.getProjectTestUrl());
+    readmeTxt = readmeTxt.replace("{{CurrentDate}}", simpleDateFormat.format(date));
+
+    archive.setReadmeTxt(readmeTxt);
 
     try {
       zipPath = archiveProcessor.process(project, archive);
