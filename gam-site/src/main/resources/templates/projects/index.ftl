@@ -7,15 +7,15 @@
 <h1 class="page-header">Projects <a href="/projects/add" class="btn btn-primary" role="button">Add Project</a></h1>
 
 <div class="list-group">
-    <a href="#" class="list-group-item">
+    <a href="/projects/ready-set-eat" class="list-group-item">
         <span class="badge">14</span>
         Ready Set Eat
     </a>
-    <a href="#" class="list-group-item">
+    <a href="/projects/kid-cuisine" class="list-group-item">
         <span class="badge">122</span>
         Kid Cuisine
     </a>
-    <a href="#" class="list-group-item">
+    <a href="/projects/alexia" class="list-group-item">
         <span class="badge">8</span>
         Alexia
     </a>
