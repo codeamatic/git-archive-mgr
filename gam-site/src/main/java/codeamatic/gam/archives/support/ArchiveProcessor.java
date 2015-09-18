@@ -3,10 +3,14 @@ package codeamatic.gam.archives.support;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URI;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -128,9 +132,12 @@ public class ArchiveProcessor {
             continue;
           }
 
+          // replace the prefix
+          file = file.replace(archive.getWebPrefix(), "");
+
           readmeTxt += file + "\r\n";
 
-          Path target = zipfs.getPath(file.replace(archive.getWebPrefix(), ""));
+          Path target = zipfs.getPath(file);
           Path parentTargetDir = target.getParent();
 
           if (parentTargetDir != null && !Files.exists(parentTargetDir)) {
@@ -160,9 +167,11 @@ public class ArchiveProcessor {
             continue;
           }
 
+          file = file.replace(archive.getAppPrefix(), "");
+
           readmeTxt += file + "\r\n";
 
-          Path target = zipfs.getPath(file.replace(archive.getAppPrefix(), ""));
+          Path target = zipfs.getPath(file);
           Path parentTargetDir = target.getParent();
 
           if (parentTargetDir != null && !Files.exists(parentTargetDir)) {
@@ -172,6 +181,12 @@ public class ArchiveProcessor {
           Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
         }
       }
+    }
+
+    // Write readme data to README txt file
+    try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+        new FileOutputStream(prjStructureOut.toString().replace("\\", "/") + "/README.txt"), "utf-8"))) {
+      writer.write(readmeTxt);
     }
 
     // Create final zip
