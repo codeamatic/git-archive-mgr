@@ -1,20 +1,57 @@
 package codeamatic.gam.archives;
 
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
+import org.hibernate.annotations.Type;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+
+/**
+ * Model class for representing a single project
+ */
+@Entity
+@Table(name = "archives")
 public class Archive {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
+
+  @NotNull
   private String appPrefix;
 
+  @NotNull
   private String webPrefix;
 
+  @NotNull
   private String deployDate;
 
   private String diffBranch;
 
+  @NotNull
   private String diffParam1;
 
+  @NotNull
   private String diffParam2;
 
+  @NotNull
+  @Type(type = "text")
   private String readmeTxt;
+
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date created;
 
   public Archive() {
   }
@@ -28,6 +65,15 @@ public class Archive {
     this.diffParam1 = diffParam1;
     this.diffParam2 = diffParam2;
     this.readmeTxt = readmeTxt;
+  }
+
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
   }
 
   public String getAppPrefix() {
@@ -84,5 +130,19 @@ public class Archive {
 
   public void setReadmeTxt(String readmeTxt) {
     this.readmeTxt = readmeTxt;
+  }
+
+  public Date getCreated() {
+    return created;
+  }
+
+  public void setCreated(Date created) {
+    this.created = created;
+  }
+
+  @PrePersist
+  @PreUpdate
+  protected void updateCreatedDate() {
+    this.created = new Date();
   }
 }

@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import codeamatic.gam.archives.Archive;
 import codeamatic.gam.archives.support.ArchiveProcessor;
+import codeamatic.gam.archives.support.ArchiveRepository;
 import codeamatic.gam.projects.Project;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -38,10 +39,12 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class ProjectsController {
 
   private final ArchiveProcessor archiveProcessor;
+  private final ArchiveRepository archiveRepository;
 
   @Autowired
-  public ProjectsController(ArchiveProcessor archiveProcessor) {
+  public ProjectsController(ArchiveProcessor archiveProcessor, ArchiveRepository archiveRepository) {
     this.archiveProcessor = archiveProcessor;
+    this.archiveRepository = archiveRepository;
   }
 
   @RequestMapping(method = {GET, HEAD})
@@ -114,6 +117,8 @@ public class ProjectsController {
 
     try {
       zipPath = archiveProcessor.process(project, archive);
+      // save archive to db
+      archiveRepository.save(archive);
     } catch (IOException | InterruptedException e) {
       // TODO: Add better error handling
       System.out.println(e.getMessage());
