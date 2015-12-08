@@ -1,7 +1,5 @@
 package codeamatic.gam.archives.support;
 
-import org.springframework.stereotype.Service;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -28,15 +26,13 @@ import java.util.Map;
 import codeamatic.gam.archives.Archive;
 import codeamatic.gam.projects.Project;
 
-@Service
-public class ArchiveProcessor {
+/**
+ * Implementation of {@link ArchiveService}.
+ */
+public class ArchiveServiceImpl implements ArchiveService {
 
   /**
-   * Processes the archiving and comparison of deltas between git commits/branches.
-   *
-   * @param project populated project object
-   * @param archive populated archive object
-   * @return a string representation of the temporary directory where the zip archive is located
+   * {@inheritDoc}
    */
   public String process(Project project, Archive archive) throws IOException, InterruptedException {
 
@@ -73,6 +69,7 @@ public class ArchiveProcessor {
 
     return zipPath;
   }
+
 
   /**
    * Process and generate zip archives for
