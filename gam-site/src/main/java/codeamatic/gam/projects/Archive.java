@@ -1,4 +1,4 @@
-package codeamatic.gam.archives;
+package codeamatic.gam.projects;
 
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;

@@ -2,8 +2,6 @@ package codeamatic.gam.projects;
 
 import java.util.List;
 
-import codeamatic.gam.archives.Archive;
-
 /**
  * Model class for representing a single project
  */

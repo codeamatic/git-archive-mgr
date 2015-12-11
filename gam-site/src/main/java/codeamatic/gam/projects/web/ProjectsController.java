@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,16 +14,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
-import codeamatic.gam.archives.Archive;
-import codeamatic.gam.archives.support.ArchiveProcessor;
-import codeamatic.gam.archives.support.ArchiveRepository;
+import codeamatic.gam.projects.Archive;
+import codeamatic.gam.projects.support.ArchiveRepository;
+import codeamatic.gam.projects.support.ArchiveService;
 import codeamatic.gam.projects.Project;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -38,12 +35,12 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/projects")
 public class ProjectsController {
 
-  private final ArchiveProcessor archiveProcessor;
+  private final ArchiveService archiveService;
   private final ArchiveRepository archiveRepository;
 
   @Autowired
-  public ProjectsController(ArchiveProcessor archiveProcessor, ArchiveRepository archiveRepository) {
-    this.archiveProcessor = archiveProcessor;
+  public ProjectsController(ArchiveService archiveService, ArchiveRepository archiveRepository) {
+    this.archiveService = archiveService;
     this.archiveRepository = archiveRepository;
   }
 
@@ -62,10 +59,9 @@ public class ProjectsController {
 
     Project project = new Project();
     project.setProjectDirectory(
-        "C:\\Users\\jason.webb\\Dev\\_projects\\ConAgra\\rse_rockfish\\conagra-foods");
+        "E:\\Dev\\_projects\\Rockfish\\ConAgra\\rse_rockfish");
     project.setProjectName("ReadySetEat");
     project.setProjectOwner("Rockfish");
-
     Archive archive = new Archive();
 
     try {
@@ -96,7 +92,7 @@ public class ProjectsController {
 
     Project project = new Project();
     project.setProjectDirectory(
-        "C:\\Users\\jason.webb\\Dev\\_projects\\ConAgra\\rse_rockfish\\conagra-foods");
+        "E:\\Dev\\_projects\\Rockfish\\ConAgra\\rse_rockfish");
     project.setProjectName("ReadySetEat");
     project.setProjectOwner("Rockfish");
     project.setProjectTestUrl("http://www.rse2.staging.cinjweb.rfisite.com");
@@ -116,9 +112,9 @@ public class ProjectsController {
     archive.setReadmeTxt(readmeTxt);
 
     try {
-      zipPath = archiveProcessor.process(project, archive);
+      zipPath = archiveService.process(project, archive);
       // save archive to db
-      archiveRepository.save(archive);
+     // archiveRepository.save(archive);
     } catch (IOException | InterruptedException e) {
       // TODO: Add better error handling
       System.out.println(e.getMessage());

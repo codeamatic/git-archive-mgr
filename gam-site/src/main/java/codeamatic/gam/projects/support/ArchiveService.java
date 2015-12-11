@@ -1,8 +1,8 @@
-package codeamatic.gam.archives.support;
+package codeamatic.gam.projects.support;
 
 import java.io.IOException;
 
-import codeamatic.gam.archives.Archive;
+import codeamatic.gam.projects.Archive;
 import codeamatic.gam.projects.Project;
 
 /**

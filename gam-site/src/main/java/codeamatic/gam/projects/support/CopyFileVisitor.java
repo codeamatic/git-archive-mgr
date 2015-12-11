@@ -1,4 +1,4 @@
-package codeamatic.gam.archives.support;
+package codeamatic.gam.projects.support;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;

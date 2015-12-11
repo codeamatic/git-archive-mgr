@@ -1,9 +1,9 @@
-package codeamatic.gam.archives.support;
+package codeamatic.gam.projects.support;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import codeamatic.gam.archives.Archive;
+import codeamatic.gam.projects.Archive;
 
 @Repository
 public interface ArchiveRepository extends CrudRepository<Archive, Long> {
