@@ -12,5 +12,5 @@
   <component name="ProjectKey">
     <option name="state" value="https://github.com/codeamatic/git-archive-mgr.git" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="false" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="false" assert-keyword="true" jdk-15="true" project-jdk-name="1.7.0_51" project-jdk-type="JavaSDK" />
 </project>
