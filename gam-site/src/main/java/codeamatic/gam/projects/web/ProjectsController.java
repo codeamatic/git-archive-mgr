@@ -57,11 +57,11 @@ public class ProjectsController {
   @RequestMapping(value = "/{projectHash}", method = {GET, HEAD})
   public String showProject(@PathVariable String projectHash, Model model) {
 
-    Project project = new Project();
-    project.setProjectDirectory(
-        "E:\\Dev\\_projects\\Rockfish\\ConAgra\\rse_rockfish");
-    project.setProjectName("ReadySetEat");
-    project.setProjectOwner("Rockfish");
+//    Project project = new Project();
+//    project.setProjectDirectory(
+//        "E:\\Dev\\_projects\\Rockfish\\ConAgra\\rse_rockfish");
+//    project.setProjectName("ReadySetEat");
+//    project.setProjectOwner("Rockfish");
     Archive archive = new Archive();
 
     try {
@@ -90,12 +90,12 @@ public class ProjectsController {
   public FileSystemResource processArchive(@PathVariable String projectHash, Archive archive, HttpServletResponse httpServletResponse) {
     // TODO: Check archive object for errors, add BindingResult
 
-    Project project = new Project();
-    project.setProjectDirectory(
-        "E:\\Dev\\_projects\\Rockfish\\ConAgra\\rse_rockfish");
-    project.setProjectName("ReadySetEat");
-    project.setProjectOwner("Rockfish");
-    project.setProjectTestUrl("http://www.rse2.staging.cinjweb.rfisite.com");
+//    Project project = new Project();
+//    project.setProjectDirectory(
+//        "E:\\Dev\\_projects\\Rockfish\\ConAgra\\rse_rockfish");
+//    project.setProjectName("ReadySetEat");
+//    project.setProjectOwner("Rockfish");
+//    project.setProjectTestUrl("http://www.rse2.staging.cinjweb.rfisite.com");
 
     String zipPath = "";
 
@@ -103,26 +103,26 @@ public class ProjectsController {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     // replace README template holders {{tempHolder}}
-    String readmeTxt = archive.getReadmeTxt();
-    readmeTxt = readmeTxt.replace("{{ProjectName}}", project.getProjectName());
-    readmeTxt = readmeTxt.replace("{{ArchiveDeployDate}}", archive.getDeployDate());
-    readmeTxt = readmeTxt.replace("{{ProjectTestUrl}}", project.getProjectTestUrl());
-    readmeTxt = readmeTxt.replace("{{CurrentDate}}", simpleDateFormat.format(date));
+//    String readmeTxt = archive.getReadmeTxt();
+//    readmeTxt = readmeTxt.replace("{{ProjectName}}", project.getProjectName());
+//    readmeTxt = readmeTxt.replace("{{ArchiveDeployDate}}", archive.getDeployDate());
+//    readmeTxt = readmeTxt.replace("{{ProjectTestUrl}}", project.getProjectTestUrl());
+//    readmeTxt = readmeTxt.replace("{{CurrentDate}}", simpleDateFormat.format(date));
+//
+//  archive.setReadmeTxt(readmeTxt);
 
-    archive.setReadmeTxt(readmeTxt);
+//    try {
+//      //zipPath = archiveService.process(project, archive);
+//      // save archive to db
+//     // archiveRepository.save(archive);
+//    } catch (IOException | InterruptedException e) {
+//      // TODO: Add better error handling
+//      System.out.println(e.getMessage());
+//    }
 
-    try {
-      zipPath = archiveService.process(project, archive);
-      // save archive to db
-     // archiveRepository.save(archive);
-    } catch (IOException | InterruptedException e) {
-      // TODO: Add better error handling
-      System.out.println(e.getMessage());
-    }
+    //String zipName = "From_" + project.getProjectOwner() + "_" + project.getProjectName() + ".zip";
 
-    String zipName = "From_" + project.getProjectOwner() + "_" + project.getProjectName() + ".zip";
-
-    httpServletResponse.setHeader("Content-Disposition", "attachment;filename=\"" + zipName + "\"");
-    return new FileSystemResource(zipPath);
+    //httpServletResponse.setHeader("Content-Disposition", "attachment;filename=\"" + zipName + "\"");
+    return null; //new FileSystemResource(zipPath);
   }
 }

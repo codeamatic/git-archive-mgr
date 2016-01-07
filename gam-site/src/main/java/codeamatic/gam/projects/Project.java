@@ -1,71 +1,72 @@
 package codeamatic.gam.projects;
 
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * Model class for representing a single project
  */
+@Entity
+@Table(name = "project")
 public class Project {
 
-  private String projectName;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
 
-  private String projectOwner;
+  @NotNull
+  private String name;
 
-  private List<Archive> archiveList;
+  @NotNull
+  private String owner;
 
-  private String projectDirectory;
+  @NotNull
+  private String directory;
 
-  private String projectTestUrl;
+  @NotNull
+  private String testUrl;
 
-  public Project() {
+  public Project(String name, String owner, String directory,
+                 String testUrl) {
+    this.name = name;
+    this.owner = owner;
+    this.directory = directory;
+    this.testUrl = testUrl;
   }
 
-  public Project(String projectName, String projectOwner,
-                 List<Archive> archiveList, String projectDirectory, String projectTestUrl) {
-    this.projectName = projectName;
-    this.projectOwner = projectOwner;
-    this.archiveList = archiveList;
-    this.projectDirectory = projectDirectory;
-    this.projectTestUrl = projectTestUrl;
+  public String getName() {
+    return name;
   }
 
-  public String getProjectName() {
-    return projectName;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public void setProjectName(String projectName) {
-    this.projectName = projectName;
+  public String getOwner() {
+    return owner;
   }
 
-  public String getProjectOwner() {
-    return projectOwner;
+  public void setOwner(String owner) {
+    this.owner = owner;
   }
 
-  public void setProjectOwner(String projectOwner) {
-    this.projectOwner = projectOwner;
+  public String getDirectory() {
+    return directory;
   }
 
-  public List<Archive> getArchiveList() {
-    return archiveList;
+  public void setDirectory(String directory) {
+    this.directory = directory;
   }
 
-  public void setArchiveList(List<Archive> archiveList) {
-    this.archiveList = archiveList;
+  public String getTestUrl() {
+    return testUrl;
   }
 
-  public String getProjectDirectory() {
-    return projectDirectory;
-  }
-
-  public void setProjectDirectory(String projectDirectory) {
-    this.projectDirectory = projectDirectory;
-  }
-
-  public String getProjectTestUrl() {
-    return projectTestUrl;
-  }
-
-  public void setProjectTestUrl(String projectTestUrl) {
-    this.projectTestUrl = projectTestUrl;
+  public void setTestUrl(String testUrl) {
+    this.testUrl = testUrl;
   }
 }
