@@ -36,8 +36,8 @@ public class Project {
   @Column(nullable = false, columnDefinition = "TINYINT(1)")
   private boolean active = true;
 
-  @Column(nullable = false, updatable = false, columnDefinition = "INT(11)")
-  private Long created = new Date().getTime() / 1000;
+  @Column(nullable = false)
+  private Date created = new Date();
 
   @SuppressWarnings("unused")
   public Project() {
@@ -104,7 +104,11 @@ public class Project {
     this.active = active;
   }
 
-  public Long getCreated() {
+  public Date getCreated() {
     return created;
+  }
+
+  public void setCreated(Date created) {
+    this.created = created;
   }
 }
