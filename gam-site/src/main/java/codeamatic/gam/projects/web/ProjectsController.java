@@ -6,6 +6,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,11 +19,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import codeamatic.gam.projects.Archive;
 import codeamatic.gam.projects.support.ArchiveRepository;
 import codeamatic.gam.projects.support.ArchiveService;
 import codeamatic.gam.projects.Project;
+import codeamatic.gam.projects.support.ProjectForm;
+import codeamatic.gam.projects.support.ProjectService;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.HEAD;
@@ -35,33 +39,52 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/projects")
 public class ProjectsController {
 
+  private final ProjectService projectService;
   private final ArchiveService archiveService;
   private final ArchiveRepository archiveRepository;
 
   @Autowired
-  public ProjectsController(ArchiveService archiveService, ArchiveRepository archiveRepository) {
+  public ProjectsController(ProjectService projectService, ArchiveService archiveService, ArchiveRepository archiveRepository) {
+    this.projectService = projectService;
     this.archiveService = archiveService;
     this.archiveRepository = archiveRepository;
   }
 
   @RequestMapping(method = {GET, HEAD})
   public String listProjects(Model model) {
+    model.addAttribute("projects", projectService.getProjects());
     return "projects/index";
   }
 
   @RequestMapping(value = "/add", method = {GET, HEAD})
-  public String addProject(Model model) {
-    return "";
+  public String newProject(Model model) {
+    model.addAttribute("projectForm", new ProjectForm());
+    return "projects/edit";
+  }
+
+
+  @RequestMapping(method = {POST})
+  public String addProject(@Valid ProjectForm projectForm, BindingResult bindingResult)  {
+
+      if (bindingResult.hasErrors()) {
+        return "projects/edit";
+        // TODO: return list of errors
+        //response = ResponseUtil.toResponse(false);
+      } else {
+        projectService.addProject(projectForm);
+        //accountService.addAccount(accountForm);
+        //response = ResponseUtil.toResponse(true, messages.getMessage("account.addSuccess"));
+      }
+
+      return "projects/index";
   }
 
   @RequestMapping(value = "/{projectHash}", method = {GET, HEAD})
   public String showProject(@PathVariable String projectHash, Model model) {
 
     Project project = new Project();
-    project.setProjectDirectory(
-        "E:\\Dev\\_projects\\Rockfish\\ConAgra\\rse_rockfish");
-    project.setProjectName("ReadySetEat");
-    project.setProjectOwner("Rockfish");
+    project.setName("Alexia");
+    project.setOwner("Rockfish");
     Archive archive = new Archive();
 
     try {
@@ -91,11 +114,9 @@ public class ProjectsController {
     // TODO: Check archive object for errors, add BindingResult
 
     Project project = new Project();
-    project.setProjectDirectory(
-        "E:\\Dev\\_projects\\Rockfish\\ConAgra\\rse_rockfish");
-    project.setProjectName("ReadySetEat");
-    project.setProjectOwner("Rockfish");
-    project.setProjectTestUrl("http://www.rse2.staging.cinjweb.rfisite.com");
+    project.setName("Alexia");
+    project.setOwner("Rockfish");
+    //project.setProjectTestUrl("http://www.alexia.staging.cinjweb.rfisite.com");
 
     String zipPath = "";
 
@@ -104,9 +125,9 @@ public class ProjectsController {
 
     // replace README template holders {{tempHolder}}
     String readmeTxt = archive.getReadmeTxt();
-    readmeTxt = readmeTxt.replace("{{ProjectName}}", project.getProjectName());
+    readmeTxt = readmeTxt.replace("{{ProjectName}}", project.getName());
     readmeTxt = readmeTxt.replace("{{ArchiveDeployDate}}", archive.getDeployDate());
-    readmeTxt = readmeTxt.replace("{{ProjectTestUrl}}", project.getProjectTestUrl());
+   // readmeTxt = readmeTxt.replace("{{ProjectTestUrl}}", project.getProjectTestUrl());
     readmeTxt = readmeTxt.replace("{{CurrentDate}}", simpleDateFormat.format(date));
 
     archive.setReadmeTxt(readmeTxt);
@@ -120,7 +141,7 @@ public class ProjectsController {
       System.out.println(e.getMessage());
     }
 
-    String zipName = "From_" + project.getProjectOwner() + "_" + project.getProjectName() + ".zip";
+    String zipName = "From_" + project.getOwner() + "_" + project.getName() + ".zip";
 
     httpServletResponse.setHeader("Content-Disposition", "attachment;filename=\"" + zipName + "\"");
     return new FileSystemResource(zipPath);

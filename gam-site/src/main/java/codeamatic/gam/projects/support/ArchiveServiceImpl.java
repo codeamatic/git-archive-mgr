@@ -39,7 +39,7 @@ public class ArchiveServiceImpl implements ArchiveService {
    */
   public String process(Project project, Archive archive) throws IOException, InterruptedException {
 
-    BufferedReader br = getDiffResults(archive, project.getProjectDirectory());
+    BufferedReader br = getDiffResults(archive, project.getBuildDirectory());
     String line;
 
     // Retrieve branch diff
@@ -86,12 +86,12 @@ public class ArchiveServiceImpl implements ArchiveService {
       return null;
     }
 
-    String fromAuthor = "From_" + project.getProjectOwner();
+    String fromAuthor = "From_" + project.getOwner();
 
     // Create temp directory used for building archive
     Path
         tempDir =
-        Files.createTempDirectory(project.getProjectName().toLowerCase());
+        Files.createTempDirectory(project.getName().toLowerCase());
     Path prjStructureOut;
 
     Date date = new Date();
@@ -100,7 +100,7 @@ public class ArchiveServiceImpl implements ArchiveService {
     if (Files.exists(tempDir)) {
       prjStructureOut =
           Paths.get(
-              tempDir + "/" + fromAuthor + "/" + project.getProjectName()
+              tempDir + "/" + fromAuthor + "/" + project.getName()
               + "/" + simpleDateFormat.format(date));
       Files.createDirectories(prjStructureOut);
     } else {
@@ -124,7 +124,7 @@ public class ArchiveServiceImpl implements ArchiveService {
       try (FileSystem zipfs = FileSystems.newFileSystem(uri, env)) {
 
         for (String file : webList) {
-          Path source = Paths.get(project.getProjectDirectory() + "/" + file);
+          Path source = Paths.get(project.getBuildDirectory() + "/" + file);
 
           if (Files.notExists(source)) {
             // File was deleted, log it to README
@@ -159,7 +159,7 @@ public class ArchiveServiceImpl implements ArchiveService {
       try (FileSystem zipfs = FileSystems.newFileSystem(uri, env)) {
 
         for (String file : appList) {
-          Path source = Paths.get(project.getProjectDirectory() + "/" + file);
+          Path source = Paths.get(project.getBuildDirectory() + "/" + file);
 
           if (Files.notExists(source)) {
             // File was deleted, log it to README
@@ -194,7 +194,7 @@ public class ArchiveServiceImpl implements ArchiveService {
     URI
         uri =
         URI.create("jar:file:/" + tempDir.toString().replace("\\", "/") + "/" + fromAuthor + "_"
-                   + project.getProjectName() + ".zip");
+                   + project.getName() + ".zip");
 
     // Walk the file source and build a zip from it
     String zipPath;
