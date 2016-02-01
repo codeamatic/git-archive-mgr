@@ -1,71 +1,98 @@
 package codeamatic.gam.projects;
 
-import java.util.List;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * Model class for representing a single project
  */
+@Entity
 public class Project {
 
-  private String projectName;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
 
-  private String projectOwner;
+  @Column(nullable = false, unique = true)
+  private String name;
 
-  private List<Archive> archiveList;
+  @Column(nullable = false)
+  private String owner;
 
-  private String projectDirectory;
+  @Column(nullable = false)
+  private String repoUrl;
 
-  private String projectTestUrl;
+  @Column(nullable = false)
+  private String siteUrl;
 
+  @Column(nullable = false, columnDefinition = "TINYINT(1)")
+  private boolean active = true;
+
+  @Column(nullable = false, updatable = false, columnDefinition = "INT(11)")
+  private Long created = new Date().getTime() / 1000;
+
+  @SuppressWarnings("unused")
   public Project() {
   }
 
-  public Project(String projectName, String projectOwner,
-                 List<Archive> archiveList, String projectDirectory, String projectTestUrl) {
-    this.projectName = projectName;
-    this.projectOwner = projectOwner;
-    this.archiveList = archiveList;
-    this.projectDirectory = projectDirectory;
-    this.projectTestUrl = projectTestUrl;
+  public Project(String name, String owner, String repoUrl,
+                 String siteUrl) {
+    this.name = name;
+    this.owner = owner;
+    this.repoUrl = repoUrl;
+    this.siteUrl = siteUrl;
   }
 
-  public String getProjectName() {
-    return projectName;
+  public Integer getId() {
+    return id;
   }
 
-  public void setProjectName(String projectName) {
-    this.projectName = projectName;
+  public String getName() {
+    return name;
   }
 
-  public String getProjectOwner() {
-    return projectOwner;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public void setProjectOwner(String projectOwner) {
-    this.projectOwner = projectOwner;
+  public String getOwner() {
+    return owner;
   }
 
-  public List<Archive> getArchiveList() {
-    return archiveList;
+  public void setOwner(String owner) {
+    this.owner = owner;
   }
 
-  public void setArchiveList(List<Archive> archiveList) {
-    this.archiveList = archiveList;
+  public String getRepoUrl() {
+    return repoUrl;
   }
 
-  public String getProjectDirectory() {
-    return projectDirectory;
+  public void setRepoUrl(String repoUrl) {
+    this.repoUrl = repoUrl;
   }
 
-  public void setProjectDirectory(String projectDirectory) {
-    this.projectDirectory = projectDirectory;
+  public String getSiteUrl() {
+    return siteUrl;
   }
 
-  public String getProjectTestUrl() {
-    return projectTestUrl;
+  public void setSiteUrl(String siteUrl) {
+    this.siteUrl = siteUrl;
   }
 
-  public void setProjectTestUrl(String projectTestUrl) {
-    this.projectTestUrl = projectTestUrl;
+  public boolean isActive() {
+    return active;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
+  }
+
+  public Long getCreated() {
+    return created;
   }
 }
