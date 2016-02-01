@@ -1,14 +1,23 @@
 apply plugin: 'spring-boot'
 
+ext {
+    springBootVersion = '1.3.2.RELEASE'
+}
+
+// Make it so that you can set system properties from the IDE
+bootRun.systemProperties = System.properties
+
 springBoot {
     mainClass = 'codeamatic.gam.Application'
 }
 
 dependencies {
-    compile "org.springframework.boot:spring-boot-starter-web:1.2.5.RELEASE"
-    compile "org.springframework.boot:spring-boot-starter-freemarker:1.2.5.RELEASE"
-    compile "org.springframework.boot:spring-boot-starter-data-jpa:1.2.5.RELEASE"
+    compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-freemarker:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
     compile "mysql:mysql-connector-java:5.1.36"
+
+    compile "org.springframework.boot:spring-boot-devtools:$springBootVersion"
 
     // for use in mocking http interactions
     testCompile "org.springframework:spring-test"
