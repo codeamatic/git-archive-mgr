@@ -25,6 +25,9 @@ public class Project {
   private String owner;
 
   @Column(nullable = false)
+  private String buildDirectory;
+
+  @Column(nullable = false)
   private String repoUrl;
 
   @Column(nullable = false)
@@ -40,10 +43,11 @@ public class Project {
   public Project() {
   }
 
-  public Project(String name, String owner, String repoUrl,
+  public Project(String name, String owner, String buildDirectory, String repoUrl,
                  String siteUrl) {
     this.name = name;
     this.owner = owner;
+    this.buildDirectory = buildDirectory;
     this.repoUrl = repoUrl;
     this.siteUrl = siteUrl;
   }
@@ -66,6 +70,14 @@ public class Project {
 
   public void setOwner(String owner) {
     this.owner = owner;
+  }
+
+  public String getBuildDirectory() {
+    return buildDirectory;
+  }
+
+  public void setBuildDirectory(String buildDirectory) {
+    this.buildDirectory = buildDirectory;
   }
 
   public String getRepoUrl() {
