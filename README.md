@@ -31,7 +31,7 @@ be added to the properties file.
 # Authoring Team/Agency  - Used in the name of the two top level directories within the package
 gam.projectAuthor=CuddlefishCo
 # Project Name - Used in the name of the top level and 3rd level directory within the package
-gam.projectName=CuddleProject
+gam.name=CuddleProject
 # The directory where static files are located (directory will be omitted from final package)
 gam.webPrefix=cuddle-web/web/
 # The directory where Java related app files are located (directory will be omitted from final package)

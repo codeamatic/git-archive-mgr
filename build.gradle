@@ -1,3 +1,9 @@
+ext {
+    javaVersion = '1.7'
+    slf4jVersion = '1.7.12'
+    log4jVersion = '2.5'
+}
+
 wrapper.gradleVersion = '2.4'
 
 buildscript {
@@ -13,10 +19,6 @@ buildscript {
     }
 }
 
-ext {
-    javaVersion = '1.7'
-}
-
 configure(allprojects) {
     apply plugin: 'java'
     apply plugin: 'idea'
@@ -30,10 +32,11 @@ configure(allprojects) {
     }
 
     dependencies {
-        compile 'org.slf4j:slf4j-api:1.7.12'
-//        testCompile 'junit:junit'
-//        testCompile 'org.hamcrest:hamcrest-library'
-        testCompile 'org.mockito:mockito-core:1.10.19'
+        compile "org.slf4j:slf4j-api:$slf4jVersion"
+        compile "org.apache.logging.log4j:log4j-api:$log4jVersion"
+        compile "org.apache.logging.log4j:log4j-core:$log4jVersion"
+        compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
+        runtime "org.apache.logging.log4j:log4j-web:$log4jVersion"
     }
 
     configurations {
@@ -41,5 +44,7 @@ configure(allprojects) {
         all*.exclude group: 'commons-logging', module: 'commons-logging'
         // replaced with log4j-over-slf4j
         all*.exclude group: 'log4j', module: 'log4j'
+        // exclude logback classic
+        all*.exclude group: 'ch.qos.logback', module: 'logback-classic'
     }
 }
