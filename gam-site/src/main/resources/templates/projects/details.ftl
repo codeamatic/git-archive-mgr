@@ -13,7 +13,8 @@
 [#-- Add bodyContent macro --]
 [#macro bodyContent]
 
-<h1 class="page-header">${project.name} <a href="/projects" class="btn btn-link" role="button">Back
+<h1 class="page-header">${archiveForm.project.name} <a href="/projects" class="btn btn-link"
+                                                       role="button">Back
     to Projects</a></h1>
 
 [#--<div class="archives-list">--]
@@ -29,35 +30,37 @@
 
 <h2 class="page-header">Add Archive</h2>
 
-<form role="form" method="post">
-    [@spring.bind "archive" /]
+<form role="form" action="/projects/${archiveForm.project.id}/archives" method="POST">
+    [@spring.bind "archiveForm" /]
+
+    [@spring.formHiddenInput "archiveForm.project" /]
 
     <div class="input-group">
-        [@spring.formInput "archive.webPrefix" "class='form-control' placeholder='Static Prefix'" /]
+        [@spring.formInput "archiveForm.webPrefix" "class='form-control' placeholder='Static Prefix'" /]
     </div>
 
     <div class="input-group">
-        [@spring.formInput "archive.appPrefix" "class='form-control' placeholder='Dynamic Prefix'" /]
+        [@spring.formInput "archiveForm.appPrefix" "class='form-control' placeholder='Dynamic Prefix'" /]
     </div>
 
     <div class="input-group">
-        [@spring.formInput "archive.deployDate" "class='form-control' placeholder='Deploy Date'" /]
+        [@spring.formInput "archiveForm.deployDate" "class='form-control' placeholder='Deploy Date'" /]
     </div>
 
     <div class="input-group">
-        [@spring.formInput "archive.diffBranch" "class='form-control' placeholder='Diff Branch'" /]
+        [@spring.formInput "archiveForm.diffBranch" "class='form-control' placeholder='Diff Branch'" /]
     </div>
 
     <div class="input-group">
-        [@spring.formInput "archive.diffParam1" "class='form-control' placeholder='Commit Parameter 1'" /]
+        [@spring.formInput "archiveForm.diffParam1" "class='form-control' placeholder='Commit Parameter 1'" /]
     </div>
 
     <div class="input-group">
-        [@spring.formInput "archive.diffParam2" "class='form-control' placeholder='Commit Parameter 2'" /]
+        [@spring.formInput "archiveForm.diffParam2" "class='form-control' placeholder='Commit Parameter 2'" /]
     </div>
 
     <div class="input-group">
-        [@spring.formTextarea "archive.readmeTxt" "class='form-control' placeholder='Readme.Txt'" /]
+        [@spring.formTextarea "archiveForm.readmeTxt" "class='form-control' placeholder='Readme.Txt'" /]
     </div>
 
     <button type="submit" class="btn btn-default">Submit</button>

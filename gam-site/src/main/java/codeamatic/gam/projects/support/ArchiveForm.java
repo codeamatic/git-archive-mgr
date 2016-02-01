@@ -1,82 +1,56 @@
-package codeamatic.gam.projects;
+package codeamatic.gam.projects.support;
 
-import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.NotEmpty;
 
-import java.util.Date;
+import codeamatic.gam.projects.Project;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
+public class ArchiveForm {
 
-/**
- * Model class for representing a single project
- */
-@Entity
-public class Archive {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Integer id;
-
-  @ManyToOne
-  @JoinColumn(name = "projectId", nullable = false)
+  @NotEmpty
   private Project project;
 
-  @NotNull
+  @NotEmpty
   private String appPrefix;
 
-  @NotNull
+  @NotEmpty
   private String webPrefix;
 
-  @NotNull
+  @NotEmpty
   private String deployDate;
 
   private String diffBranch;
 
-  @NotNull
+  @NotEmpty
   private String diffParam1;
 
-  @NotNull
+  @NotEmpty
   private String diffParam2;
 
-  @NotNull
-  @Type(type = "text")
+  @NotEmpty
   private String readmeTxt;
 
-  @Column(nullable = false)
-  private Date created = new Date();
-
   @SuppressWarnings("unused")
-  public Archive() {
+  public ArchiveForm() {
   }
 
-  public Archive(Project project, String appPrefix, String webPrefix, String diffBranch,
-                 String diffParam1,
-                 String diffParam2, String readmeTxt) {
+  public ArchiveForm(Project project, String appPrefix, String webPrefix, String deployDate,
+                     String diffBranch, String diffParam1, String diffParam2, String readmeTxt) {
     this.project = project;
     this.appPrefix = appPrefix;
     this.webPrefix = webPrefix;
+    this.deployDate = deployDate;
     this.diffBranch = diffBranch;
     this.diffParam1 = diffParam1;
     this.diffParam2 = diffParam2;
     this.readmeTxt = readmeTxt;
   }
 
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
   public Project getProject() {
     return project;
+  }
+
+  public void setProject(Project project) {
+    this.project = project;
   }
 
   public String getAppPrefix() {
@@ -133,13 +107,5 @@ public class Archive {
 
   public void setReadmeTxt(String readmeTxt) {
     this.readmeTxt = readmeTxt;
-  }
-
-  public Date getCreated() {
-    return created;
-  }
-
-  public void setCreated(Date created) {
-    this.created = created;
   }
 }
