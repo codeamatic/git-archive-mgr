@@ -11,9 +11,6 @@ public class ProjectForm {
   private String projectOwner;
 
   @NotEmpty
-  private String projectDirectory;
-
-  @NotEmpty
   private String projectRepoUrl;
 
   @NotEmpty
@@ -22,10 +19,10 @@ public class ProjectForm {
   @SuppressWarnings("unused")
   public ProjectForm() {}
 
-  public ProjectForm(String projectName, String projectOwner, String projectDirectory, String projectRepoUrl, String projectSiteUrl) {
+  public ProjectForm(String projectName, String projectOwner, String projectRepoUrl,
+                     String projectSiteUrl) {
     this.projectName = projectName;
     this.projectOwner = projectOwner;
-    this.projectDirectory = projectDirectory;
     this.projectRepoUrl = projectRepoUrl;
     this.projectSiteUrl = projectSiteUrl;
   }
@@ -44,14 +41,6 @@ public class ProjectForm {
 
   public void setProjectOwner(String projectOwner) {
     this.projectOwner = projectOwner;
-  }
-
-  public String getProjectDirectory() {
-    return projectDirectory;
-  }
-
-  public void setProjectDirectory(String projectDirectory) {
-    this.projectDirectory = projectDirectory;
   }
 
   public String getProjectRepoUrl() {

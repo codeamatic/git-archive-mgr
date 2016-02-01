@@ -22,9 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import codeamatic.gam.projects.Archive;
+import codeamatic.gam.projects.Project;
 import codeamatic.gam.projects.support.ArchiveRepository;
 import codeamatic.gam.projects.support.ArchiveService;
-import codeamatic.gam.projects.Project;
 import codeamatic.gam.projects.support.ProjectForm;
 import codeamatic.gam.projects.support.ProjectService;
 
@@ -62,29 +62,25 @@ public class ProjectsController {
     return "projects/edit";
   }
 
-
   @RequestMapping(method = {POST})
-  public String addProject(@Valid ProjectForm projectForm, BindingResult bindingResult)  {
+  public String addProject(@Valid ProjectForm projectForm, BindingResult bindingResult,
+                           Model model) {
 
       if (bindingResult.hasErrors()) {
         return "projects/edit";
         // TODO: return list of errors
-        //response = ResponseUtil.toResponse(false);
       } else {
         projectService.addProject(projectForm);
-        //accountService.addAccount(accountForm);
-        //response = ResponseUtil.toResponse(true, messages.getMessage("account.addSuccess"));
       }
 
-      return "projects/index";
+    return "redirect:/projects";
   }
 
-  @RequestMapping(value = "/{projectHash}", method = {GET, HEAD})
-  public String showProject(@PathVariable String projectHash, Model model) {
+  @RequestMapping(value = "/{projectId:[0-9]+}", method = {GET, HEAD})
+  public String showProject(@PathVariable Integer projectId, Model model) {
 
-    Project project = new Project();
-    project.setName("Alexia");
-    project.setOwner("Rockfish");
+    Project project = projectService.getProject(projectId);
+
     Archive archive = new Archive();
 
     try {
@@ -104,6 +100,7 @@ public class ProjectsController {
       //  If this fails....just pass through.
     }
 
+    model.addAttribute("project", project);
     model.addAttribute("archive", archive);
     return "projects/details";
   }

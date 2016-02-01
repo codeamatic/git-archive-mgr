@@ -1,23 +1,31 @@
+[#--
+    Variables:
+        project
+            - id
+            - name
+            - owner
+            - projectRepoUrl
+            - projectSiteUrl
+
 [#-- Include master layout --]
 [#include "/_layouts/layouts-main.ftl"]
 
 [#-- Add bodyContent macro --]
 [#macro bodyContent]
 
-<h1 class="page-header">Archives <a href="/projects/add" class="btn btn-primary" role="button">Add Archive</a></h1>
+<h1 class="page-header">${project.name} <a href="/projects" class="btn btn-link" role="button">Back
+    to Projects</a></h1>
 
-<div class="archives-list">
-    <div class="list-group">
-        <a href="#" class="list-group-item">
-            <span class="badge">31</span>
-            2015-08-23 Package 15
-        </a>
-        <a href="#" class="list-group-item">
-            <span class="badge">2</span>
-            2015-08-23 Hotfix - Lucky Orange
-        </a>
-    </div>
-</div>
+[#--<div class="archives-list">--]
+[#--<div class="list-group">--]
+[#--<a href="#" class="list-group-item">--]
+[#--2015-08-23 Package 15--]
+[#--</a>--]
+[#--<a href="#" class="list-group-item">--]
+[#--2015-08-23 Hotfix - Lucky Orange--]
+[#--</a>--]
+[#--</div>--]
+[#--</div>--]
 
 <h2 class="page-header">Add Archive</h2>
 

@@ -6,7 +6,7 @@
                 - name
                 - owner
                 - projectRepoUrl
-                - project
+                - projectSiteUrl
 
 [#-- Include master layout --]
 [#include "/_layouts/layouts-main.ftl"]
@@ -19,16 +19,8 @@
 [#list projects as project ]
 <div class="list-group">
     <a href="/projects/${project.id}" class="list-group-item">
-        <span class="badge">14</span>
-        Ready Set Eat
-    </a>
-    <a href="/projects/kid-cuisine" class="list-group-item">
-        <span class="badge">122</span>
-        Kid Cuisine
-    </a>
-    <a href="/projects/alexia" class="list-group-item">
-        <span class="badge">8</span>
-        Alexia
+        <span class="badge">0</span>
+    ${project.name}
     </a>
 </div>
 [/#list]
