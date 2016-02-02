@@ -55,12 +55,12 @@ public class Archive {
   public Archive() {
   }
 
-  public Archive(Project project, String appPrefix, String webPrefix, String diffBranch,
-                 String diffParam1,
-                 String diffParam2, String readmeTxt) {
+  public Archive(Project project, String appPrefix, String webPrefix, String deployDate, String diffBranch,
+                 String diffParam1, String diffParam2, String readmeTxt) {
     this.project = project;
     this.appPrefix = appPrefix;
     this.webPrefix = webPrefix;
+    this.deployDate = deployDate;
     this.diffBranch = diffBranch;
     this.diffParam1 = diffParam1;
     this.diffParam2 = diffParam2;
