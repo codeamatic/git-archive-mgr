@@ -129,7 +129,7 @@ public class ProjectsController {
     try {
       Archive archive = archiveService.addArchive(archiveForm);
       zipPath = archiveService.process(archive);
-      // save archive to db
+      // TODO save archive to db
      // archiveRepository.save(archive);
     } catch (IOException | InterruptedException e) {
       // TODO: Add better error handling

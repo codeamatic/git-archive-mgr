@@ -22,6 +22,7 @@ buildscript {
 configure(allprojects) {
     apply plugin: 'java'
     apply plugin: 'idea'
+    apply plugin: 'eclipse'
 
     targetCompatibility = javaVersion
     sourceCompatibility = javaVersion
