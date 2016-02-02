@@ -7,6 +7,9 @@ import org.springframework.util.DigestUtils;
 
 import codeamatic.gam.projects.Project;
 
+/**
+ * Service used for mapping a {@link ProjectForm} to a {@link Project}.
+ */
 @Service
 public class ProjectFormAdapter {
 
@@ -17,6 +20,14 @@ public class ProjectFormAdapter {
     this.baseBuildDirectory = baseBuildDirectory;
   }
 
+  /**
+   * Creates a new {@link Project} from the user submitted {@link ProjectForm}.  Generates a build
+   * directory by using the {@link #baseBuildDirectory} + a substring of a md5 hash created using
+   * the project name.
+   *
+   * @param projectForm populated projectForm object
+   * @return a mapped project
+   */
   public Project createProjectFromProjectForm(ProjectForm projectForm) {
     // set project directory to be a hash of the project name
     String md5DigestAsHex = DigestUtils.md5DigestAsHex(projectForm.getProjectName().getBytes());
@@ -26,6 +37,7 @@ public class ProjectFormAdapter {
         project =
         new Project(projectForm.getProjectName(), projectForm.getProjectOwner(), projectDirectory,
                     projectForm.getProjectRepoUrl(), projectForm.getProjectSiteUrl());
+
     return project;
   }
 }
