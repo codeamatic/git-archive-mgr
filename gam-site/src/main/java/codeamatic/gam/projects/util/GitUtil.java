@@ -3,6 +3,7 @@ package codeamatic.gam.projects.util;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public class GitUtil {
    *
    * @param command    String command to be tokenized and processed/executed
    * @param projectDir String directory where commands should be ran
-   * @return Process objecct
+   * @return Process object
    */
   public static Process processCommand(String command, String projectDir) {
     Process process = null;
@@ -25,9 +26,7 @@ public class GitUtil {
 
     // Break commands into individual tokens and add to process
     // list for building
-    for (String token : tokens) {
-      processList.add(token);
-    }
+    processList.addAll(Arrays.asList(tokens));
 
     if (!processList.isEmpty()) {
       try {
