@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +27,7 @@ import java.util.Map;
 
 import codeamatic.gam.projects.Archive;
 import codeamatic.gam.projects.Project;
+import codeamatic.gam.projects.util.GitUtil;
 
 @Service
 public class ArchiveService {
@@ -74,15 +74,7 @@ public class ArchiveService {
       }
     }
 
-//    Map<String, Object> deltaMap = new HashMap<>();
-//    deltaMap.put("webList", webList);
-//    deltaMap.put("appList", appList);
-//    deltaMap.put("otherList", otherList);
-//
-//    return deltaMap;
-    String zipPath = generateZips(appList, webList, archive, project);
-
-    return zipPath;
+    return generateZips(appList, webList, archive, project);
   }
 
   /**
@@ -235,6 +227,12 @@ public class ArchiveService {
    * @return a BufferedReader object ready to process the resulting lines
    */
   private BufferedReader getDiffResults(Archive archive, String projectDir) {
+
+    // check for existence of project Dir
+    if (!Files.exists(Paths.get(projectDir))) {
+      System.out.println("Path doesn't exist");
+    }
+
     BufferedReader br = null;
     String gitFetch = "git fetch origin";
     String gitStash = "git stash";
@@ -243,63 +241,28 @@ public class ArchiveService {
     String gitDiff = "git diff --name-only %s %s";
 
     // fetch/update entire repo and stash anything already there
-    processCommand(gitFetch, projectDir);
-    processCommand(gitStash, projectDir);
+    GitUtil.processCommand(gitFetch, projectDir);
+    GitUtil.processCommand(gitStash, projectDir);
 
     // checkout and update branch 2 first so that we don't have to re-checkout branch 1
     String checkoutCmd2 = String.format(gitCheckout, archive.getDiffParam2());
     String pullCmd2 = String.format(gitPull, archive.getDiffParam2());
 
-    processCommand(checkoutCmd2, projectDir);
-    processCommand(pullCmd2, projectDir);
+    GitUtil.processCommand(checkoutCmd2, projectDir);
+    GitUtil.processCommand(pullCmd2, projectDir);
 
     // checkout and update branch 1
     String checkoutCmd1 = String.format(gitCheckout, archive.getDiffParam1());
     String pullCmd1 = String.format(gitPull, archive.getDiffParam1());
 
-    processCommand(checkoutCmd1, projectDir);
-    processCommand(pullCmd1, projectDir);
+    GitUtil.processCommand(checkoutCmd1, projectDir);
+    GitUtil.processCommand(pullCmd1, projectDir);
 
     // diff
     gitDiff = String.format(gitDiff, archive.getDiffParam1(), archive.getDiffParam2());
-    InputStream is = processCommand(gitDiff, projectDir).getInputStream();
+    InputStream is = GitUtil.processCommand(gitDiff, projectDir).getInputStream();
     InputStreamReader isr = new InputStreamReader(is);
 
     return new BufferedReader(isr);
-  }
-
-  /**
-   * Takes a string command, tokenizes it into smaller strings to be added to the process builder
-   * for execution.
-   *
-   * @param command    String command to be tokenized and processed/executed
-   * @param projcetDir String directory where commands should be ran
-   * @return Process objecct
-   */
-  private Process processCommand(String command, String projcetDir) {
-    Process process = null;
-    List<String> processList = new ArrayList<>();
-    String[] tokens = command.split(" ");
-
-    // Break commands into individual tokens and add to process
-    // list for building
-    for (String token : tokens) {
-      processList.add(token);
-    }
-
-    if (!processList.isEmpty()) {
-      try {
-        ProcessBuilder pb = new ProcessBuilder(processList);
-        pb.directory(new File(projcetDir));
-
-        process = pb.start();
-        process.waitFor();
-
-      } catch (IOException | InterruptedException ex) {
-        // TODO: don't fall through
-      }
-    }
-
-    return process;
   }
 }

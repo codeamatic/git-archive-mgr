@@ -23,7 +23,7 @@ import javax.validation.Valid;
 
 import codeamatic.gam.projects.Archive;
 import codeamatic.gam.projects.Project;
-import codeamatic.gam.projects.support.ArchiveRepository;
+import codeamatic.gam.projects.support.ArchiveForm;
 import codeamatic.gam.projects.support.ArchiveService;
 import codeamatic.gam.projects.support.ProjectForm;
 import codeamatic.gam.projects.support.ProjectService;
@@ -41,13 +41,11 @@ public class ProjectsController {
 
   private final ProjectService projectService;
   private final ArchiveService archiveService;
-  private final ArchiveRepository archiveRepository;
 
   @Autowired
-  public ProjectsController(ProjectService projectService, ArchiveService archiveService, ArchiveRepository archiveRepository) {
+  public ProjectsController(ProjectService projectService, ArchiveService archiveService) {
     this.projectService = projectService;
     this.archiveService = archiveService;
-    this.archiveRepository = archiveRepository;
   }
 
   @RequestMapping(method = {GET, HEAD})
@@ -79,9 +77,8 @@ public class ProjectsController {
   @RequestMapping(value = "/{projectId:[0-9]+}", method = {GET, HEAD})
   public String showProject(@PathVariable Integer projectId, Model model) {
 
-    Project project = projectService.getProject(projectId);
-
-    Archive archive = new Archive();
+    ArchiveForm archiveForm = new ArchiveForm();
+    archiveForm.setProject(projectService.getProject(projectId));
 
     try {
       Resource resource = new ClassPathResource("readme.template.txt");
@@ -94,26 +91,26 @@ public class ProjectsController {
       }
       br.close();
 
-      archive.setReadmeTxt(readmeTxt);
+      archiveForm.setReadmeTxt(readmeTxt);
     } catch(IOException e) {
       // Template is only being loaded for convenience and ease of entry.
       //  If this fails....just pass through.
     }
 
-    model.addAttribute("project", project);
-    model.addAttribute("archive", archive);
+    model.addAttribute("archiveForm", archiveForm);
+
     return "projects/details";
   }
 
   @ResponseBody
-  @RequestMapping(value = "/{projectHash}", method = {POST}, produces = "application/zip")
-  public FileSystemResource processArchive(@PathVariable String projectHash, Archive archive, HttpServletResponse httpServletResponse) {
+  @RequestMapping(value = "/{projectId:[0-9]+}/archives", method = {
+      POST}, produces = "application/zip")
+  public FileSystemResource processArchive(@PathVariable Integer projectId, ArchiveForm archiveForm,
+                                           BindingResult bindingResult,
+                                           HttpServletResponse httpServletResponse) {
     // TODO: Check archive object for errors, add BindingResult
 
-    Project project = new Project();
-    project.setName("Alexia");
-    project.setOwner("Rockfish");
-    //project.setProjectTestUrl("http://www.alexia.staging.cinjweb.rfisite.com");
+    Project project = archiveForm.getProject();
 
     String zipPath = "";
 
@@ -121,16 +118,17 @@ public class ProjectsController {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     // replace README template holders {{tempHolder}}
-    String readmeTxt = archive.getReadmeTxt();
+    String readmeTxt = archiveForm.getReadmeTxt();
     readmeTxt = readmeTxt.replace("{{ProjectName}}", project.getName());
-    readmeTxt = readmeTxt.replace("{{ArchiveDeployDate}}", archive.getDeployDate());
-   // readmeTxt = readmeTxt.replace("{{ProjectTestUrl}}", project.getProjectTestUrl());
+    readmeTxt = readmeTxt.replace("{{ArchiveDeployDate}}", archiveForm.getDeployDate());
+    readmeTxt = readmeTxt.replace("{{ProjectTestUrl}}", project.getSiteUrl());
     readmeTxt = readmeTxt.replace("{{CurrentDate}}", simpleDateFormat.format(date));
 
-    archive.setReadmeTxt(readmeTxt);
+    archiveForm.setReadmeTxt(readmeTxt);
 
     try {
-      zipPath = archiveService.process(project, archive);
+      Archive archive = archiveService.addArchive(archiveForm);
+      zipPath = archiveService.process(archive);
       // save archive to db
      // archiveRepository.save(archive);
     } catch (IOException | InterruptedException e) {
