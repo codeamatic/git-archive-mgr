@@ -7,7 +7,7 @@ import java.io.File;
 import java.util.List;
 
 import codeamatic.gam.projects.Project;
-import codeamatic.gam.projects.util.GitUtil;
+import codeamatic.gam.util.GitUtil;
 
 /**
  * Service used for interacting with the project repository as well as for

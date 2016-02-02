@@ -27,7 +27,7 @@ import java.util.Map;
 
 import codeamatic.gam.projects.Archive;
 import codeamatic.gam.projects.Project;
-import codeamatic.gam.projects.util.GitUtil;
+import codeamatic.gam.util.GitUtil;
 
 @Service
 public class ArchiveService {
@@ -233,34 +233,22 @@ public class ArchiveService {
       System.out.println("Path doesn't exist");
     }
 
-    BufferedReader br = null;
-    String gitFetch = "git fetch origin";
-    String gitStash = "git stash";
-    String gitCheckout = "git checkout %s";
-    String gitPull = "git pull --rebase origin %s";
-    String gitDiff = "git diff --name-only %s %s";
+    // fetch/update entire repo
+    GitUtil.gitFetch("origin", projectDir);
 
-    // fetch/update entire repo and stash anything already there
-    GitUtil.processCommand(gitFetch, projectDir);
-    GitUtil.processCommand(gitStash, projectDir);
+    // if we ARE NOT doing a diff between two commits, then we are doing a diff
+    // between two branches
+    if(archive.getDiffBranch() == null) {
 
-    // checkout and update branch 2 first so that we don't have to re-checkout branch 1
-    String checkoutCmd2 = String.format(gitCheckout, archive.getDiffParam2());
-    String pullCmd2 = String.format(gitPull, archive.getDiffParam2());
+      // checkout and pull branch 2 first so that we don't have to re-checkout branch 1
+      GitUtil.gitCheckoutPull(archive.getDiffParam2(), projectDir);
+      GitUtil.gitCheckoutPull(archive.getDiffParam1(), projectDir);
 
-    GitUtil.processCommand(checkoutCmd2, projectDir);
-    GitUtil.processCommand(pullCmd2, projectDir);
+    } else {
+      GitUtil.gitCheckoutPull(archive.getDiffBranch(), projectDir);
+    }
 
-    // checkout and update branch 1
-    String checkoutCmd1 = String.format(gitCheckout, archive.getDiffParam1());
-    String pullCmd1 = String.format(gitPull, archive.getDiffParam1());
-
-    GitUtil.processCommand(checkoutCmd1, projectDir);
-    GitUtil.processCommand(pullCmd1, projectDir);
-
-    // diff
-    gitDiff = String.format(gitDiff, archive.getDiffParam1(), archive.getDiffParam2());
-    InputStream is = GitUtil.processCommand(gitDiff, projectDir).getInputStream();
+    InputStream is = GitUtil.gitDiff(archive.getDiffParam1(), archive.getDiffParam2(), projectDir).getInputStream();
     InputStreamReader isr = new InputStreamReader(is);
 
     return new BufferedReader(isr);

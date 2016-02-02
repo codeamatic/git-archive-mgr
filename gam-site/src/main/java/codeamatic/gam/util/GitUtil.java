@@ -1,4 +1,4 @@
-package codeamatic.gam.projects.util;
+package codeamatic.gam.util;
 
 import java.io.File;
 import java.io.IOException;

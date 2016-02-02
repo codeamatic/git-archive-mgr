@@ -15,7 +15,7 @@
     [#assign formAction = "/projects/${project.id}/edit"]
     [#assign formMethod = "PUT"]
 [#else]
-    [#assign formAction = "/projects"]
+    [#assign formAction = "/projects/add"]
     [#assign formMethod = "POST"]
 [/#if]
 

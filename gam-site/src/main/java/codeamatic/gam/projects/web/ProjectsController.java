@@ -33,7 +33,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.HEAD;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
- * Controller that handles requests for the projects overview page.
+ * Controller that handles requests for all project related pages.
  */
 @Controller
 @RequestMapping("/projects")
@@ -60,7 +60,7 @@ public class ProjectsController {
     return "projects/edit";
   }
 
-  @RequestMapping(method = {POST})
+  @RequestMapping(value = "/add", method = {POST})
   public String addProject(@Valid ProjectForm projectForm, BindingResult bindingResult,
                            Model model) {
 
