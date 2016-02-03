@@ -16,6 +16,7 @@
 hs_err_pid*
 
 .gradle/
+build/
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
