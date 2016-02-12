@@ -238,7 +238,7 @@ public class ArchiveService {
 
     // if we ARE NOT doing a diff between two commits, then we are doing a diff
     // between two branches
-    if(archive.getDiffBranch() == null) {
+    if (archive.getDiffBranch().isEmpty()) {
 
       // checkout and pull branch 2 first so that we don't have to re-checkout branch 1
       GitUtil.gitCheckoutPull(archive.getDiffParam2(), projectDir);
