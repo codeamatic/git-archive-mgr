@@ -1,5 +1,5 @@
 Configuration:
-  status: info
+  status: debug
 
   Appenders:
     Console:
@@ -10,6 +10,6 @@ Configuration:
 
   Loggers:
     Root:
-      level: info
+      level: debug
       AppenderRef:
         ref: Console
