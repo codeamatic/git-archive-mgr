@@ -37,15 +37,8 @@ configure(allprojects) {
         compile "org.apache.logging.log4j:log4j-api:$log4jVersion"
         compile "org.apache.logging.log4j:log4j-core:$log4jVersion"
         compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
-        runtime "org.apache.logging.log4j:log4j-web:$log4jVersion"
-    }
+        compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.6.4'
 
-    configurations {
-        // replaced with jcl-over-slf4j
-        all*.exclude group: 'commons-logging', module: 'commons-logging'
-        // replaced with log4j-over-slf4j
-        all*.exclude group: 'log4j', module: 'log4j'
-        // exclude logback classic
-        all*.exclude group: 'ch.qos.logback', module: 'logback-classic'
+        runtime "org.apache.logging.log4j:log4j-web:$log4jVersion"
     }
 }

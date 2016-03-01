@@ -20,10 +20,20 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-freemarker:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion"
     compile "mysql:mysql-connector-java:5.1.36"
 
     compile "org.springframework.boot:spring-boot-devtools:$springBootVersion"
 
     // for use in mocking http interactions
     testCompile "org.springframework:spring-test"
+
+    configurations {
+        // replaced with jcl-over-slf4j
+        all*.exclude group: 'commons-logging', module: 'commons-logging'
+        // replaced with log4j-over-slf4j
+        all*.exclude group: 'log4j', module: 'log4j'
+        // exclude logback classic
+        all*.exclude group: 'ch.qos.logback', module: 'logback-classic'
+    }
 }
