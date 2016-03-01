@@ -1,5 +1,7 @@
 package codeamatic.gam.projects.support;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,8 @@ import codeamatic.gam.util.GitUtil;
 
 @Service
 public class ArchiveService {
+
+  private static Logger logger = LogManager.getLogger(GitUtil.class);
 
   private final ArchiveFormAdapater archiveFormAdapater;
 
@@ -150,6 +154,8 @@ public class ArchiveService {
 
           Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
         }
+      }  catch(IOException ex) {
+        logger.error("Unable to create web.zip - {}", ex.getMessage());
       }
     }
 
@@ -184,6 +190,8 @@ public class ArchiveService {
 
           Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
         }
+      }  catch(IOException ex) {
+        logger.error("Unable to create app.zip - {}", ex.getMessage());
       }
     }
 
