@@ -68,7 +68,11 @@ public class ProjectsController {
         return "projects/edit";
         // TODO: return list of errors
       } else {
-        projectService.addProject(projectForm);
+        try {
+          projectService.addProject(projectForm);
+        } catch(IOException ex) {
+          // TODO: handle appropriately
+        }
       }
 
     return "redirect:/projects";

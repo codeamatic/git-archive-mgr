@@ -1,5 +1,8 @@
 package codeamatic.gam.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +13,8 @@ import java.util.List;
  * Simple util class used to provide convenience methods that simplify Git commands processing
  */
 public class GitUtil {
+
+  private static Logger logger = LogManager.getLogger(GitUtil.class);
 
   /**
    * Execute a diff between two branches, tags or commit points
@@ -70,6 +75,8 @@ public class GitUtil {
     List<String> processList = new ArrayList<>();
     String[] tokens = command.split(" ");
 
+    logger.debug("Process Git command - {}", command);
+
     // Break commands into individual tokens and add to process
     // list for building
     processList.addAll(Arrays.asList(tokens));
@@ -83,7 +90,7 @@ public class GitUtil {
         process.waitFor();
 
       } catch (IOException | InterruptedException ex) {
-        // TODO: don't fall through
+        logger.error("Unable to process command - {}.  Exception - {}", command, ex.getMessage());
       }
     }
 

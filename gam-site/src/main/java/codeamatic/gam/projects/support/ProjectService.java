@@ -1,9 +1,12 @@
 package codeamatic.gam.projects.support;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import codeamatic.gam.projects.Project;
@@ -16,6 +19,8 @@ import codeamatic.gam.util.GitUtil;
  */
 @Service
 public class ProjectService {
+
+  private static Logger logger = LogManager.getLogger(GitUtil.class);
 
   private final ProjectRepository projectRepository;
 
@@ -52,15 +57,15 @@ public class ProjectService {
    * @param projectForm ProjectForm model
    * @return a new Project object
    */
-  public Project addProject(ProjectForm projectForm) {
+  public Project addProject(ProjectForm projectForm) throws IOException {
     Project project = projectFormAdapter.createProjectFromProjectForm(projectForm);
 
     // Create directory and clone project
     File buildDir = new File(project.getBuildDirectory());
 
     if (!buildDir.exists() && !buildDir.mkdirs()) {
-      // TODO: throw an exception of some sort
-      System.out.println("Unable to create project directory");
+      logger.error("Unable to create project directory");
+      throw new IOException("Unable to create directory structure " + buildDir.getAbsolutePath());
     }
 
     boolean cloned = cloneProject(project.getRepoUrl(), project.getBuildDirectory());
