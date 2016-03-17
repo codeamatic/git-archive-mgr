@@ -68,13 +68,13 @@ public class ProjectService {
       throw new IOException("Unable to create directory structure " + buildDir.getAbsolutePath());
     }
 
-    boolean cloned = cloneProject(project.getRepoUrl(), project.getBuildDirectory());
+    cloneProject(project.getRepoUrl(), project.getBuildDirectory());
 
     // ONLY save the project if the cloning worked as expected.
     // TODO: throw exception if unable to clone
-    if(cloned) {
+    //if(cloned) {
       projectRepository.save(project);
-    }
+    //}
 
     return project;
   }
@@ -86,12 +86,11 @@ public class ProjectService {
    * @param buildDir String the directory location where the project will be built
    * @return true if the project is cloned correctly, false otherwise
    */
-  private boolean cloneProject(String repoUrl, String buildDir) {
+  private List<String> cloneProject(String repoUrl, String buildDir) {
     // TODO: throw an uncloneable exception or something
     String gitClone = "git clone " + repoUrl + " .";
 
-    Process cloneProcess = GitUtil.processCommand(gitClone, buildDir);
-
-    return (cloneProcess != null);
+    // TODO: return something that will actually help us identify if the clone was successful.
+    return GitUtil.processCommand(gitClone, buildDir);
   }
 }

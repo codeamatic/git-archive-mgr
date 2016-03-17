@@ -3,8 +3,10 @@ package codeamatic.gam.util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +25,7 @@ public class GitUtil {
    * @param param2 String second parameter (branch or commit hex)
    * @param projectDir String directory to be built in
    */
-  public static Process gitDiff(String param1, String param2, String projectDir) {
+  public static List<String> gitDiff(String param1, String param2, String projectDir) {
     String gitDiff = "git diff --name-only %s %s";
 
     String diffCmd = String.format(gitDiff, param1, param2);
@@ -37,7 +39,7 @@ public class GitUtil {
    * @param remote String remote name
    * @param projectDir String directory to be built in
    */
-  public static Process gitFetch(String remote, String projectDir) {
+  public static List<String> gitFetch(String remote, String projectDir) {
     String gitFetch = "git fetch %s";
 
     String fetchCmd = String.format(gitFetch, remote);
@@ -51,7 +53,7 @@ public class GitUtil {
    * @param branch String branch to be checked out and updated
    * @param projectDir String directory to be built in
    */
-  public static Process gitCheckoutPull(String branch, String projectDir) {
+  public static List<String> gitCheckoutPull(String branch, String projectDir) {
     String gitCheckout = "git checkout %s";
     String gitPull = "git pull --rebase origin %s";
 
@@ -68,10 +70,11 @@ public class GitUtil {
    *
    * @param command    String command to be tokenized and processed/executed
    * @param projectDir String directory where commands should be ran
-   * @return Process object
+   * @return BufferedReader object
    */
-  public static Process processCommand(String command, String projectDir) {
-    Process process = null;
+  public static List<String> processCommand(String command, String projectDir) {
+    List<String> processOutput = new ArrayList<>();
+    BufferedReader br = null;
     List<String> processList = new ArrayList<>();
     String[] tokens = command.split(" ");
 
@@ -83,17 +86,24 @@ public class GitUtil {
 
     if (!processList.isEmpty()) {
       try {
+        String line;
         ProcessBuilder pb = new ProcessBuilder(processList);
         pb.directory(new File(projectDir));
+        Process process = pb.start();
 
-        process = pb.start();
+        br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+        // Avoids a deadlock from the buffer filling up
+        while ((line = br.readLine()) != null) {
+          processOutput.add(line);
+        }
+
         process.waitFor();
-
       } catch (IOException | InterruptedException ex) {
         logger.error("Unable to process command - {}.  Exception - {}", command, ex.getMessage());
       }
     }
 
-    return process;
+    return processOutput;
   }
 }

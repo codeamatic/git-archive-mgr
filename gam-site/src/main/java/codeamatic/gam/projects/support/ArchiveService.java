@@ -9,8 +9,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URI;
@@ -57,8 +55,7 @@ public class ArchiveService {
    */
   public String process(Archive archive) throws IOException, InterruptedException {
     Project project = archive.getProject();
-    BufferedReader br = getDiffResults(archive, project.getBuildDirectory());
-    String line;
+    List<String> diffOutput = getDiffResults(archive, project.getBuildDirectory());
 
     // Retrieve branch diff
     List<String> appList = new ArrayList<>();
@@ -68,7 +65,7 @@ public class ArchiveService {
     String webPrefix = archive.getWebPrefix();
     String appPrefix = archive.getAppPrefix();
 
-    while ((line = br.readLine()) != null) {
+    for (String line : diffOutput) {
       if (line.startsWith(webPrefix)) {
         webList.add(line);
       } else if (line.startsWith(appPrefix)) {
@@ -242,7 +239,7 @@ public class ArchiveService {
    * @param projectDir The directory of the git root within the project
    * @return a BufferedReader object ready to process the resulting lines
    */
-  private BufferedReader getDiffResults(Archive archive, String projectDir) {
+  private List<String> getDiffResults(Archive archive, String projectDir) {
 
     // check for existence of project Dir
     if (!Files.exists(Paths.get(projectDir))) {
@@ -264,9 +261,6 @@ public class ArchiveService {
       GitUtil.gitCheckoutPull(archive.getDiffBranch(), projectDir);
     }
 
-    InputStream is = GitUtil.gitDiff(archive.getDiffParam1(), archive.getDiffParam2(), projectDir).getInputStream();
-    InputStreamReader isr = new InputStreamReader(is);
-
-    return new BufferedReader(isr);
+    return GitUtil.gitDiff(archive.getDiffParam1(), archive.getDiffParam2(), projectDir);
   }
 }
